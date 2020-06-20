@@ -1,0 +1,16 @@
+---
+- import_tasks: configuration.yml
+  tags:
+    - configuration
+    - pve
+
+- import_tasks: users.yml
+  tags:
+    - users
+    - pve
+
+- import_tasks: images.yml
+  tags:
+    - images
+    - templates
+    - pve

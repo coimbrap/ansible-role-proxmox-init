@@ -1,0 +1,44 @@
+---
+- name: configuration | remove PVE Enterprise repo
+    apt_repository:
+      repo: "{{ item }}"
+      filename: pve-enterprise
+      state: absent
+    with_items:
+      - "deb https://enterprise.proxmox.com/debian {{ distribution_release }} pve-enterprise"
+      - "deb https://enterprise.proxmox.com/debian/pve {{ distribution_release }} pve-enterprise"
+
+- name: configuration | remove subscription check wrapper in web UI - try 1
+  patch:
+    src: "00_remove_checked_command_{{ distribution_release }}.patch"
+    basedir: /
+    strip: 1
+    backup: yes
+
+- name: configuration | remove subscription check wrapper in web UI - try 2
+  shell: >
+    sed -i.bak "s/data.status !== 'Active'/false/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+
+- name: configuration | restart pveproxy
+  systemd:
+    name: pveproxy
+    state: restarted
+
+- name: configuration | add proxmox repository
+  apt_repository:
+    repo: "{{ pve_repository_line }}"
+    filename: proxmox
+    state: present
+
+- name: configuration | run apt-get dist-upgrade
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    upgrade: dist
+
+- name: configuration | deploy ssh-keys
+  authorized_key:
+    user: root
+    key: "{{ keystodeploy|map(attribute='sshkey')|join('\n') }}"
+    exclusive: true
+  when: deploy_ssh_keys|bool

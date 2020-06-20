@@ -1,0 +1,8 @@
+---
+distribution_release: buster
+opn_sense_link: 'https://opnsense-mirror.hiho.ch/releases/mirror/OPNsense-20.1-OpenSSL-vga-amd64.img.bz2'
+deploy_ssh_keys: false
+pve_repository_line: "deb http://download.proxmox.com/debian/pve {{ distribution_release }} pve-no-subscription"
+pve_groups: []
+pve_users: []
+pve_acls: []

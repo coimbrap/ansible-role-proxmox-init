@@ -1,0 +1,30 @@
+---
+- name: users | proxmox groups
+  proxmox_group:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+    comment: "{{ item.comment | default(omit) }}"
+  with_items: "{{ pve_groups }}"
+
+- name: users | proxmox user accounts
+  proxmox_user:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+    enable: "{{ item.enable | default(omit) }}"
+    groups: "{{ item.groups | default([]) }}"
+    comment: "{{ item.comment | default(omit) }}"
+    email: "{{ item.email | default(omit) }}"
+    firstname: "{{ item.firstname | default(omit) }}"
+    lastname: "{{ item.lastname | default(omit) }}"
+    password: "{{ item.password | default(omit) }}"
+    expire: "{{ item.expire | default(omit) }}"
+  with_items: "{{ pve_users }}"
+
+- name: users | proxmox ACLs
+  proxmox_acl:
+    path: "{{ item.path }}"
+    roles: "{{ item.roles }}"
+    state: "{{ item.state | default('present') }}"
+    groups: "{{ item.groups | default([]) }}"
+    users: "{{ item.users | default([]) }}"
+  with_items: "{{ pve_acls }}"
