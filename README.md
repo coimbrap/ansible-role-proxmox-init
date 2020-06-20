@@ -1,10 +1,12 @@
-# Ansible role PVE
+# Ansible role PVE
 
 Configuration de base pour Proxmox.
 
 /!\ Non testé pour le moment.
 
-### host_vars/pve/pve.yml
+Inspiration : https://github.com/lae/ansible-role-proxmox
+
+### host_vars/pve/pve.yml
 ```yaml
 pve_groups:
   - name: adminsys
@@ -24,6 +26,10 @@ pve_acls:
 deploy_ssh_keys: true
 ```
 
-Licence GPLv3 - Auteur : Pierre Coimbra pour Elukerio
+### License
 
-Inspiration : https://github.com/lae/ansible-role-proxmox
+GPLv3 - Elukerio
+
+### Author Information
+
+Pierre Coimbra
