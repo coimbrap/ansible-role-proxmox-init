@@ -1,20 +1,20 @@
-# Ansible role PVE
+# Ansible role - proxmox-init
 
-Configuration de base pour Proxmox.
-
-/!\ Non testé pour le moment.
+Ansible role to initialize the PVE configuration
+- Deleting subscription messages
+- Change of repositories
+- Download images / iso
+- Users / Groups creation
 
 Inspiration : https://github.com/lae/ansible-role-proxmox
 
-### host_vars/pve/pve.yml
+### Example
+
 ```yaml
 pve_groups:
   - name: adminsys
-    comment: Elukerio Adminsys
+    comment: Adminsys
 pve_users:
-  - name: mablr@pam
-    firstname: mablr
-    groups: [ "adminsys" ]
   - name: coimbrap@pam
     firstname: coimbrap
     groups: [ "adminsys" ]
@@ -28,7 +28,7 @@ deploy_ssh_keys: true
 
 ### License
 
-GPLv3 - Elukerio
+GPLv3
 
 ### Author Information
 

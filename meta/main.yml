@@ -1,18 +1,15 @@
+---
 galaxy_info:
+  role_name: proxmox-init
   author: Pierre Coimbra
-  description: Initial configuration of PVE
-  company: Elukerio
-
+  description: Ansible role to initialize the PVE configuration
   license: GPLv3
-
-  min_ansible_version: 2.4
-
+  min_ansible_version: 2.1
   platforms:
-  - name: All
+  - name: proxmox
     versions:
-    - all
-
+    - 6
   galaxy_tags:
+    - system
     - proxmox
-
 dependencies: []

@@ -1,12 +1,13 @@
 - name: images | update template list
   command: pveam update
-  when: proxmoxy__templates_update
 
 - name: images | download debian template
-   shell: >
-     pveam download local debian-10.0-standard_10.0-1_amd64.tar.gz
+  shell: >
+    pveam download {{ pve_storage|default('local') }} {{ item }}
+  with_items: "{{ pve_templates_list | default([]) }}"
 
 - name: images | download opnsense iso
   shell: |
-    wget -P /var/lib/vz/template/iso "{{opn_sense_link}}"
-    bunzip2 /var/lib/vz/template/iso/*.bz2
+    wget -P /var/lib/vz/template/iso "{{ item }}"
+    bunzip2 /var/lib/vz/template/iso/*.bz2 > /dev/null
+  with_items: "{{ iso_list | default([]) }}"

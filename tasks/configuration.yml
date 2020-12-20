@@ -1,12 +1,12 @@
 ---
 - name: configuration | remove PVE Enterprise repo
-    apt_repository:
-      repo: "{{ item }}"
-      filename: pve-enterprise
-      state: absent
-    with_items:
-      - "deb https://enterprise.proxmox.com/debian {{ distribution_release }} pve-enterprise"
-      - "deb https://enterprise.proxmox.com/debian/pve {{ distribution_release }} pve-enterprise"
+  apt_repository:
+    repo: "{{ item }}"
+    filename: pve-enterprise
+    state: absent
+  with_items:
+    - "deb https://enterprise.proxmox.com/debian {{ distribution_release }} pve-enterprise"
+    - "deb https://enterprise.proxmox.com/debian/pve {{ distribution_release }} pve-enterprise"
 
 - name: configuration | remove subscription check wrapper in web UI - try 1
   patch:
@@ -35,6 +35,14 @@
     update_cache: yes
     cache_valid_time: 3600
     upgrade: dist
+
+- name: configuration | recreate ssh keys
+  shell: |
+    rm -f /etc/ssh/ssh_host_*key*
+    ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N "" < /dev/null
+    ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -N "" < /dev/null
+  tags:
+    - sshss
 
 - name: configuration | deploy ssh-keys
   authorized_key:
